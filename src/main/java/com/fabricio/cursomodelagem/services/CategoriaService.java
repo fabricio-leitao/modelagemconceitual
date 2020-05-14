@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import com.fabricio.cursomodelagem.domain.Categoria;
 import com.fabricio.cursomodelagem.repositories.CategoriaRepository;
+import com.fabricio.cursomodelagem.services.exceptions.ObjectNotFoundException;
 
 @Service
 public class CategoriaService {
@@ -14,8 +15,8 @@ public class CategoriaService {
 	@Autowired
 	private CategoriaRepository repo;
 	
-	public Categoria find(Integer id) {
+	public Categoria find(Integer id){
 		Optional<Categoria> obj = repo.findById(id);
-		return obj.orElse(null);
+		return obj.orElseThrow(() -> new ObjectNotFoundException("Objeto não encontrado! Id: " + id + ", Tipo: " + Categoria.class.getName()));
 	}
 }
