@@ -13,6 +13,7 @@ import com.fabricio.cursomodelagem.domain.Cidade;
 import com.fabricio.cursomodelagem.domain.Cliente;
 import com.fabricio.cursomodelagem.domain.Endereco;
 import com.fabricio.cursomodelagem.domain.Estado;
+import com.fabricio.cursomodelagem.domain.ItemPedido;
 import com.fabricio.cursomodelagem.domain.Pagamento;
 import com.fabricio.cursomodelagem.domain.PagamentoComBoleto;
 import com.fabricio.cursomodelagem.domain.PagamentoComCartao;
@@ -25,6 +26,7 @@ import com.fabricio.cursomodelagem.repositories.CidadeRepository;
 import com.fabricio.cursomodelagem.repositories.ClienteRepository;
 import com.fabricio.cursomodelagem.repositories.EnderecoRepository;
 import com.fabricio.cursomodelagem.repositories.EstadoRepository;
+import com.fabricio.cursomodelagem.repositories.ItemPedidoRepository;
 import com.fabricio.cursomodelagem.repositories.PagamentoRepository;
 import com.fabricio.cursomodelagem.repositories.PedidoRepository;
 import com.fabricio.cursomodelagem.repositories.ProdutoRepository;
@@ -55,6 +57,9 @@ public class CursomodelagemApplication implements CommandLineRunner {
 	
 	@Autowired
 	private PagamentoRepository pagamentoRepository;
+	
+	@Autowired
+	private ItemPedidoRepository itemPedidoRepository;
 	
 	public static void main(String[] args) {
 		SpringApplication.run(CursomodelagemApplication.class, args);
@@ -119,6 +124,19 @@ public class CursomodelagemApplication implements CommandLineRunner {
 		
 		pedidoRepository.saveAll(Arrays.asList(ped1,ped2));
 		pagamentoRepository.saveAll(Arrays.asList(pagto1, pagto2));
+		
+		ItemPedido ip1 = new ItemPedido(ped1, p1, 0.00, 1, 2000.00);
+		ItemPedido ip2 = new ItemPedido(ped1, p3, 0.00, 2, 80.00);
+		ItemPedido ip3 = new ItemPedido(ped2, p2, 100.00, 1, 800.00);
+		
+		ped1.getItens().addAll(Arrays.asList(ip1,ip2));
+		ped2.getItens().addAll(Arrays.asList(ip3));
+		
+		p1.getItens().addAll(Arrays.asList(ip1));
+		p2.getItens().addAll(Arrays.asList(ip3));
+		p3.getItens().addAll(Arrays.asList(ip2));
+		
+		itemPedidoRepository.saveAll(Arrays.asList(ip1, ip2, ip3));
 	}
 
 }
